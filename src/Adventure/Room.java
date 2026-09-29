@@ -1,4 +1,5 @@
 package Adventure;
+import java.util.ArrayList;
 
 public class Room {
     private String name;
@@ -8,6 +9,8 @@ public class Room {
     private Room south;
     private Room east;
     private Room west;
+
+    private ArrayList<Item> items = new ArrayList<>();
 
     public Room(String name, String description) {
         this.name = name;
@@ -52,5 +55,27 @@ public class Room {
 
     public Room getWest() {
         return west;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public Item findItem(String shortName) {
+        for (Item item : items) {
+            if (item.getShortName().equals(shortName)) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean removeItem(Item item) {
+        return items.remove(item);
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
     }
 }

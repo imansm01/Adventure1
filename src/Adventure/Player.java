@@ -1,38 +1,76 @@
 package Adventure;
 
+import java.util.ArrayList;
+
 public class Player {
+    private Room currentRoom;
+    private ArrayList<Item> inventory = new ArrayList<>();
 
+    public Player(Room startRoom) {
+        currentRoom = startRoom;
+    }
 
-        private Room currentRoom;
+    public boolean move(String direction) {
+        Room newRoom = null;
 
-        public Player(Room startRoom) {
-            currentRoom = startRoom;
+        if (direction.equals("north")) {
+            newRoom = currentRoom.getNorth();
+        } else if (direction.equals("south")) {
+            newRoom = currentRoom.getSouth();
+        } else if (direction.equals("east")) {
+            newRoom = currentRoom.getEast();
+        } else if (direction.equals("west")) {
+            newRoom = currentRoom.getWest();
         }
 
-        public boolean move(String direction) {
+        if (newRoom != null) {
+            currentRoom = newRoom;
+            return true;
+        }
 
-            Room newRoom = null;
+        return false;
+    }
 
-            if (direction.equals("north")) {
-                newRoom = currentRoom.getNorth();
-            } else if (direction.equals("south")) {
-                newRoom = currentRoom.getSouth();
-            } else if (direction.equals("east")) {
-                newRoom = currentRoom.getEast();
-            } else if (direction.equals("west")) {
-                newRoom = currentRoom.getWest();
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
+
+    public Item findItem(String shortName) {
+        for (Item item : inventory) {
+            if (item.getShortName().equals(shortName)) {
+                return item;
             }
+        }
 
-            if (newRoom != null) {
-                currentRoom = newRoom;
-                return true;
-            }
+        return null;
+    }
 
+    public boolean takeItem(String shortName) {
+        Item item = currentRoom.findItem(shortName);
+
+        if (item == null) {
             return false;
         }
 
-        public Room getCurrentRoom() {
-            return currentRoom;
-        }
+        currentRoom.removeItem(item);
+        inventory.add(item);
+        return true;
     }
+
+    public boolean dropItem(String shortName) {
+        Item item = findItem(shortName);
+
+        if (item == null) {
+            return false;
+        }
+
+        inventory.remove(item);
+        currentRoom.addItem(item);
+        return true;
+    }
+}
 
