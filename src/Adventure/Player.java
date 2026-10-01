@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Player {
     private Room currentRoom;
     private ArrayList<Item> inventory = new ArrayList<>();
+    private int health = 100;
 
     public Player(Room startRoom) {
         currentRoom = startRoom;
@@ -37,6 +38,10 @@ public class Player {
 
     public ArrayList<Item> getInventory() {
         return inventory;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public Item findItem(String shortName) {
@@ -72,5 +77,33 @@ public class Player {
         currentRoom.addItem(item);
         return true;
     }
-}
 
+    public EatResult eat(String shortName) {
+        Item item = findItem(shortName);
+        boolean itemIsInInventory = true;
+
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+            itemIsInInventory = false;
+        }
+
+        if (item == null) {
+            return EatResult.NOT_FOUND;
+        }
+
+        if (!(item instanceof Food)) {
+            return EatResult.NOT_FOOD;
+        }
+
+        Food food = (Food) item;
+        health = health + food.getHealthPoints();
+
+        if (itemIsInInventory) {
+            inventory.remove(item);
+        } else {
+            currentRoom.removeItem(item);
+        }
+
+        return EatResult.EATEN;
+    }
+}

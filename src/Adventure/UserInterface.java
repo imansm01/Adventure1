@@ -12,9 +12,7 @@ public class UserInterface {
     }
 
     public void startProgram() {
-        System.out.println("You are in " + adventure.getRoomName());
-        System.out.println(adventure.getRoomDescription());
-
+        showRoom();
         boolean running = true;
 
         while (running) {
@@ -25,10 +23,14 @@ public class UserInterface {
                 System.out.println("Goodbye!");
                 running = false;
             } else if (command.equals("look")) {
-                System.out.println("You are in " + adventure.getRoomName());
-                System.out.println(adventure.getRoomDescription());
+                showRoom();
             } else if (command.equals("help")) {
-                System.out.println("Commands: go north, go south, go east, go west, look, inventory, take lamp, drop lamp, help, exit");
+                System.out.println(
+                        "Commands: go north, go south, go east, go west, " +
+                                "look, inventory, take [item], drop [item], eat [item], health, exit"
+                );
+            } else if (command.equals("health")) {
+                System.out.println("Your health is " + adventure.getHealth());
             } else if (command.equals("inventory")) {
                 showInventory();
             } else if (command.startsWith("take ")) {
@@ -47,6 +49,18 @@ public class UserInterface {
                 } else {
                     System.out.println("You don't have anything like " + itemName + " in your inventory");
                 }
+            } else if (command.startsWith("eat ")) {
+                String itemName = command.substring(4);
+                EatResult result = adventure.eat(itemName);
+
+                if (result == EatResult.EATEN) {
+                    System.out.println("You ate " + itemName);
+                    System.out.println("Your health is " + adventure.getHealth());
+                } else if (result == EatResult.NOT_FOOD) {
+                    System.out.println("You cannot eat " + itemName);
+                } else {
+                    System.out.println("You cannot find " + itemName);
+                }
             } else if (command.equals("go north")) {
                 move("north");
             } else if (command.equals("go south")) {
@@ -61,10 +75,14 @@ public class UserInterface {
         }
     }
 
+    private void showRoom() {
+        System.out.println("You are in " + adventure.getRoomName());
+        System.out.println(adventure.getRoomDescription());
+    }
+
     private void move(String direction) {
         if (adventure.go(direction)) {
-            System.out.println("You are in " + adventure.getRoomName());
-            System.out.println(adventure.getRoomDescription());
+            showRoom();
         } else {
             System.out.println("You cannot go that way");
         }
