@@ -52,4 +52,12 @@ public class Adventure {
     public int getHealth() {
         return player.getHealth();
     }
+
+    public boolean equip(String shortName) {
+        return player.equip(shortName);
+    }
+
+    public String attack() {
+        return player.attack();
+    }
 }

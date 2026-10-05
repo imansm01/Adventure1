@@ -6,6 +6,7 @@ public class Player {
     private Room currentRoom;
     private ArrayList<Item> inventory = new ArrayList<>();
     private int health = 100;
+    private Weapon equipped;
 
     public Player(Room startRoom) {
         currentRoom = startRoom;
@@ -73,6 +74,10 @@ public class Player {
             return false;
         }
 
+        if (item == equipped) {
+            equipped = null;
+        }
+
         inventory.remove(item);
         currentRoom.addItem(item);
         return true;
@@ -105,5 +110,37 @@ public class Player {
         }
 
         return EatResult.EATEN;
+    }
+
+    public boolean equip(String shortName) {
+        Item item = findItem(shortName);
+
+        if (item == null) {
+            return false;
+        }
+
+        if (!(item instanceof Weapon)) {
+            return false;
+        }
+
+        equipped = (Weapon) item;
+        return true;
+    }
+
+    public String attack() {
+        if (equipped == null) {
+            return "You have no weapon equipped.";
+        }
+
+        if (!equipped.canUse()) {
+            return "Your weapon is out of ammunition.";
+        }
+
+        equipped.use();
+
+        return "You " + equipped.getAttackVerb()
+                + " with " + equipped.getLongName()
+                + " and deal " + equipped.getDamage()
+                + " damage. " + equipped.getUsesLeftText();
     }
 }

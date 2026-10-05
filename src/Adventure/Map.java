@@ -41,17 +41,25 @@ public class Map {
 
         Item lamp = new Item("lamp", "a shiny lamp");
         Item key = new Item("key", "an old rusty key");
-        Item sword = new Item("sword", "a sharp sword");
+
         Food bread = new Food("bread", "a loaf of stale bread", 10);
         Food mushroom = new Food("mushroom", "a glowing mushroom", -50);
 
+        MeleeWeapon sword =
+                new MeleeWeapon("sword", "a rusty sword", 12);
+
+        RangedWeapon revolver =
+                new RangedWeapon("revolver", "an revolver Gun", 25, 6);
+
         room1.addItem(lamp);
-        room2.addItem(key);
         room1.addItem(bread);
         room4.addItem(sword);
+
+        room2.addItem(key);
+        room5.addItem(revolver);
+
         room5.addItem(mushroom);
 
         return room1;
-
     }
 }

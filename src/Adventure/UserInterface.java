@@ -26,8 +26,9 @@ public class UserInterface {
                 showRoom();
             } else if (command.equals("help")) {
                 System.out.println(
-                        "Commands: go north, go south, go east, go west, " +
-                                "look, inventory, take [item], drop [item], eat [item], health, exit"
+                        "Commands: go north, go south, go east, go west, "
+                                + "look, inventory, take [item], drop [item], "
+                                + "eat [item], health, equip [weapon], attack, exit"
                 );
             } else if (command.equals("health")) {
                 System.out.println("Your health is " + adventure.getHealth());
@@ -39,7 +40,8 @@ public class UserInterface {
                 if (adventure.takeItem(itemName)) {
                     System.out.println("You picked up " + itemName);
                 } else {
-                    System.out.println("There is nothing like " + itemName + " to take around here");
+                    System.out.println("There is nothing like "
+                            + itemName + " to take around here");
                 }
             } else if (command.startsWith("drop ")) {
                 String itemName = command.substring(5);
@@ -47,7 +49,8 @@ public class UserInterface {
                 if (adventure.dropItem(itemName)) {
                     System.out.println("You dropped " + itemName);
                 } else {
-                    System.out.println("You don't have anything like " + itemName + " in your inventory");
+                    System.out.println("You don't have anything like "
+                            + itemName + " in your inventory");
                 }
             } else if (command.startsWith("eat ")) {
                 String itemName = command.substring(4);
@@ -61,6 +64,16 @@ public class UserInterface {
                 } else {
                     System.out.println("You cannot find " + itemName);
                 }
+            } else if (command.startsWith("equip ")) {
+                String weaponName = command.substring(6);
+
+                if (adventure.equip(weaponName)) {
+                    System.out.println("You equipped " + weaponName);
+                } else {
+                    System.out.println("You do not have that weapon in your inventory");
+                }
+            } else if (command.equals("attack")) {
+                System.out.println(adventure.attack());
             } else if (command.equals("go north")) {
                 move("north");
             } else if (command.equals("go south")) {
