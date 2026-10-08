@@ -30,6 +30,16 @@ public class Adventure {
             }
         }
 
+        if (room.getEnemies().size() > 0) {
+            description = description + "\nEnemies:";
+
+            for (Enemy enemy : room.getEnemies()) {
+                description = description + "\n- "
+                        + enemy.getLongName() + ": "
+                        + enemy.getDescription();
+            }
+        }
+
         return description;
     }
 
@@ -49,15 +59,27 @@ public class Adventure {
         return player.eat(shortName);
     }
 
-    public int getHealth() {
-        return player.getHealth();
-    }
-
     public boolean equip(String shortName) {
         return player.equip(shortName);
     }
 
-    public String attack() {
+    public Enemy findEnemy(String shortName) {
+        return player.getCurrentRoom().findEnemy(shortName);
+    }
+
+    public int getEnemyCount() {
+        return player.getCurrentRoom().getEnemies().size();
+    }
+
+    public int playerAttack() {
         return player.attack();
+    }
+
+    public boolean playerIsAlive() {
+        return player.isAlive();
+    }
+
+    public boolean playerHit(int damage) {
+        return player.hit(damage);
     }
 }

@@ -7,12 +7,17 @@ public class Player {
     private ArrayList<Item> inventory = new ArrayList<>();
     private int health = 100;
     private Weapon equipped;
+    private boolean possessed = false;
 
     public Player(Room startRoom) {
         currentRoom = startRoom;
     }
 
     public boolean move(String direction) {
+        if (possessed) {
+            return false;
+        }
+
         Room newRoom = null;
 
         if (direction.equals("north")) {
@@ -43,6 +48,22 @@ public class Player {
 
     public int getHealth() {
         return health;
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    public boolean isPossessed() {
+        return possessed;
+    }
+
+    public void becomePossessed() {
+        possessed = true;
+    }
+
+    public void pray() {
+        possessed = false;
     }
 
     public Item findItem(String shortName) {
@@ -127,20 +148,23 @@ public class Player {
         return true;
     }
 
-    public String attack() {
-        if (equipped == null) {
-            return "You have no weapon equipped.";
-        }
+    public Weapon getEquippedWeapon() {
+        return equipped;
+    }
 
-        if (!equipped.canUse()) {
-            return "Your weapon is out of ammunition.";
-        }
-
+    public int attack() {
         equipped.use();
+        return equipped.getDamage();
+    }
 
-        return "You " + equipped.getAttackVerb()
-                + " with " + equipped.getLongName()
-                + " and deal " + equipped.getDamage()
-                + " damage. " + equipped.getUsesLeftText();
+    public boolean hit(int damage) {
+        health = health - damage;
+
+        if (health <= 0) {
+            health = 0;
+            return true;
+        }
+
+        return false;
     }
 }

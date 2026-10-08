@@ -39,26 +39,36 @@ public class Map {
         room9.setWest(room8);
         room9.setNorth(room6);
 
-        Item lamp = new Item("lamp", "a shiny lamp");
+        Item lamp = new Item("lamp", "a shiny brass lamp");
         Item key = new Item("key", "an old rusty key");
+        Item ring = new Item("ring", "an old silver ring");
 
         Food bread = new Food("bread", "a loaf of stale bread", 10);
-        Food mushroom = new Food("mushroom", "a glowing mushroom", -50);
 
         MeleeWeapon sword =
                 new MeleeWeapon("sword", "a rusty sword", 12);
 
         RangedWeapon revolver =
-                new RangedWeapon("revolver", "an revolver Gun", 25, 6);
+                new RangedWeapon("revolver", "an old revolver", 25, 6);
 
         room1.addItem(lamp);
         room1.addItem(bread);
-        room4.addItem(sword);
+        room1.addItem(sword);
 
         room2.addItem(key);
-        room5.addItem(revolver);
+        room2.addItem(revolver);
 
-        room5.addItem(mushroom);
+        Ghost ghost = new Ghost(
+                "ghost",
+                "a restless ghost",
+                "The ghost goes silently through the room.",
+                25,
+                new MeleeWeapon("ghost-claws", "ghostly claws", 5),
+                room3,
+                ring
+        );
+
+        room3.addEnemy(ghost);
 
         return room1;
     }

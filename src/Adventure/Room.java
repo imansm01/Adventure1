@@ -11,6 +11,7 @@ public class Room {
     private Room west;
 
     private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
 
     public Room(String name, String description) {
         this.name = name;
@@ -77,5 +78,27 @@ public class Room {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
+    public Enemy findEnemy(String shortName) {
+        for (Enemy enemy : enemies) {
+            if (enemy.getShortName().equals(shortName)) {
+                return enemy;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean removeEnemy(Enemy enemy) {
+        return enemies.remove(enemy);
+    }
+
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
     }
 }
